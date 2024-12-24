@@ -14,72 +14,80 @@
 
 
 class LinkedList {
-  class Node {
-    var data: String
-    var next: Node?
-    init(data: String) {
-      self.data = data
+    class Node {
+        var data: String
+        var next: Node?
+        init(data: String) {
+            self.data = data
+        }
     }
-  }
-  var head: Node?
-  var tail: Node?
-  func addToHead(_ data: String) {
-    let newHead = Node(data: data)
-      let current = head
-      head = newHead
-      if current != nil {
-        head?.next = current
-      }
-  }
-
-  func removeHead() -> Node? {
-    let removedHead = head
-      if removedHead != nil {
-        head = removedHead?.next
-        removedHead?.next = nil
-      }
-    return removedHead
-  }
+    
+    var head: Node?
+    var tail: Node?
+    
+    func addToHead(_ data: String) {
+        let newHead = Node(data: data)
+        let current = head
+        head = newHead
+        if current != nil {
+            head?.next = current
+        }
+    }
+    
+    func removeHead() -> Node? {
+        let removedHead = head
+        if removedHead != nil {
+            head = removedHead?.next
+            removedHead?.next = nil
+        }
+        return removedHead
+    }
 }
 
+
+    // MARK: - Stack
+
 struct Stack {
-  private let list = LinkedList()
-  private var size = 0
-  private var maxSize: Int
-  
-  init(maxSize: Int = 2) {
-    self.maxSize = maxSize
-  }
-
-  var isEmpty: Bool { //prevents stack overflow.
-    return size == 0
-    // return list.head == nil
-  }
-  
-  mutating func push(_ str: String) {
-    guard size < maxSize else {
-      print("The stack is full! No room to add \(str).")
-      return
+    private let list = LinkedList()
+    private var size = 0
+    private var maxSize: Int
+    
+    init(maxSize: Int = 2) {
+        self.maxSize = maxSize
     }
-    size += 1
-    list.addToHead(str)
-    print("Added \(str)!")
-  }
-  
-  func peek() -> String? {
-    guard let node = list.head else { return nil }
-    return node.data
-  }
-
-  mutating func pop() -> String? {
-    guard let node = list.removeHead() else {
-      print("Nothing left to remove!")
-      return nil
+    
+    var isEmpty: Bool { //prevents stack overflow.
+        return size == 0
+        // return list.head == nil
     }
-    size -= 1
-    print("Removed \(node.data)!")
-    return node.data
-  }
+    
+    // MARK: - Push
+    mutating func push(_ str: String) {
+        guard size < maxSize else {
+            print("The stack is full! No room to add \(str).")
+            return
+        }
+        size += 1
+        list.addToHead(str)
+        print("Added \(str)!")
+    }
+    
+    // MARK: - Peek
+    func peek() -> String? {
+        guard let node = list.head else { return nil }
+        return node.data
+    }
+    
+    //    MARK: - Pop
+    mutating func pop() -> String? {
+        guard let node = list.removeHead() else {
+            print("Nothing left to remove!")
+            return nil
+        }
+        size -= 1
+        print("Removed \(node.data)!")
+        return node.data
+    }
 }
 
 var dishes = Stack()
