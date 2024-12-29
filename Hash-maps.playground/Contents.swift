@@ -33,3 +33,31 @@ func hashFunction(key: Int, tableSize: Int) -> Int {
 // Much like an image that has been shrunk to a lower resolution, the output of a hash function contains less data than the input. Because of this, hashing is not a reversible process. With just a hash value it is impossible to know for sure the key that was plugged into the hashing function.
 
 /// !!!!!!!!!!!! A hash function must not be reversible because it compresses a large input space into a smaller output space, losing information in the process. This ensures that different inputs can map to the same output, known as collisions. The irreversibility is crucial for security purposes, such as in cryptographic hash functions, where reversing the hash would compromise data integrity.
+
+
+// MARK: - Collisions
+
+// When two keys hash to the same index, a collision occurs. Hash maps handle collisions using techniques like separate chaining or open addressing.
+
+// -> hash functions are designed to compress data from a large number of possible keys to a much smaller range. Because of this compression, it’s likely that our hash function might produce the same hash for two different keys. This is known as a hash collision. There are several strategies for resolving hash collisions.
+
+// The first strategy we’re going to learn about is called separate chaining. The separate chaining strategy avoids collisions by updating the underlying data structure. Instead of an array of values that are mapped to by hashes, it could be an array of linked lists!
+
+/// - Separate Chaining
+/// The user wants to assign a value to a key in the map.
+/// The hash map takes the key and transforms it into a hash code.
+/// The hash code is then converted into an index to an array using the modulus operation.
+/// If the value of the array at the hash function’s returned index is empty, a new linked list is created with the value as the first element of the linked list. 
+/// If a linked list already exists at the address, append the value to the linked list given.
+
+// MARK: - Saving keys
+//
+//A hash collision resolution strategy like separate chaining involves assigning two keys with the same hash to different parts of the underlying data structure. How do we know which values relate back to which keys? If the linked list at the array index given by the hash has multiple elements, they would be indistinguishable to someone with just the key.
+//
+//If we save both the key and the value, then we will be able to check against the saved key when we’re accessing data in a hash map. By saving the key with the value, we can avoid situations in which two keys have the same hash code where we might not be able to distinguish which value goes with a given key.
+//
+//Now, when we go to read or write a value for a key we do the following: calculate the hash for the key, find the appropriate index for that hash, and begin iterating through our linked list. For each element, if the saved key is the same as our key, return the value. Otherwise, continue iterating through the list comparing the keys saved in that list with our key.
+// Now that we save our keys, we can have it so that assigning to the same key overwrites the original key-value pair. We can also retrieve values consistently.
+
+
+// MARK: - Open Addressing: Linear Probing
