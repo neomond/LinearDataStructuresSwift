@@ -1,6 +1,6 @@
 //
 //  HASH MAPS: CONCEPTUAL
-    
+
 //  A hash map is:
 //
 //  Built on top of an array using a special indexing system.
@@ -33,3 +33,119 @@
 
 
 /// Hash maps provide O(1) average time complexity for these operations, making them ideal for performance-critical applications.
+/// A hash table is a data structure that stores an arbitrary number of items, mapping keys to values, and uses a hash function to compute an index.
+
+
+//
+// HASH TABLES: CONCEPTUAL -----------------------
+
+// The hashing function is the secret to efficiently storing and retrieving values in a hash table. A hashing function takes a value, passes it through a formula, and produces a result called a hash.
+
+
+struct HashTable {
+    private var values: [String]
+    
+    public init(capacity: Int) {
+        values = Array(repeating: "", count: capacity)
+    }
+    
+    private func index(for key: String) -> Int {
+        return abs(key.hashValue) % values.count
+    }
+    
+    public subscript(key: String) -> String? {
+        set {
+            if let value = newValue {
+                update(value: value, for: key)
+            } else {
+                removeValue(for: key)
+            }
+        }
+        get {
+            return value(for: key)
+        }
+    }
+    
+    // MARK: - retrieve the values
+    private func value(for key: String) -> String {
+        let elementIndex = index(for: key)
+        return values[elementIndex]
+    }
+    
+    // MARK: -  assign a value
+    private mutating func update(value: String, for key: String) {
+        let elementIndex = index(for: key)
+        values[elementIndex] = value
+    }
+    
+    // MARK: - deleting elements
+    private mutating func removeValue(for key: String) {
+        let elementIndex = index(for: key)
+        return values[elementIndex] = ""
+    }
+}
+
+var hashTable = HashTable(capacity: 5)
+hashTable["Thor"] = "Strongest Avenger"
+hashTable["Thor"] = nil
+print(hashTable["Thor"]!) // Should Print: ""
+
+
+
+// MARK: - Collisions: Assign, Retrieve, Delete
+//struct HashTable {
+//    // 1 - 2
+//    private var buckets: [[(String, String)]]
+//    
+//    public init(capacity: Int) {
+//        // 1
+//        buckets = Array(repeating: [], count: capacity)
+//    }
+//    
+//    private func index(for key: String) -> Int {
+//        // 2
+//        return abs(key.hashValue) % buckets.count
+//    }
+//    
+//    public subscript(key: String) -> String? {
+//        set {
+//            if let value = newValue {
+//                update(value: value, for: key)
+//            } else {
+//                removeValue(for: key)
+//            }
+//        }
+//        get {
+//            return value(for: key)
+//        }
+//    }
+//    
+//    
+//    private func value(for key: String) -> String {
+//        let bucketIndex = index(for: key)
+//        if let (_, currentValue) = buckets[bucketIndex].enumerated().first(where: { $0.element.0 == key}) {
+//            return currentValue.1
+//        }
+//        return ""
+//    }
+//    
+//    
+//    
+//    private mutating func update(value: String, for key: String) {
+//        let bucketIndex = index(for: key)
+//        if let (elementIndex, _) = buckets[bucketIndex].enumerated().first(where: { $0.element.0 == key}) {
+//            buckets[bucketIndex][elementIndex] = (key, value)
+//        }  else {
+//            buckets[bucketIndex].append((key, value))
+//        }
+//        
+//        
+//        
+//        private mutating func removeValue(for key: String) {
+//            let bucketIndex = index(for: key)
+//            if let (elementIndex, _) = buckets[bucketIndex].enumerated().first(where: { $0.element.0 == key}){
+//                buckets[bucketIndex].remove(at: elementIndex)
+//            }
+//        }
+//    }
+//}
